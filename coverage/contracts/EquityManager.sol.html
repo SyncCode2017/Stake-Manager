@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/EquityManager.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> EquityManager.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.13% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>50/64</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.14% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>8/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">73.68% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>14/19</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75.71% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>53/70</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+&nbsp;
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+&nbsp;
+error EquityManager__TotalValueGreaterThan100();
+error EquityManager__StakeIsZero();
+error EquityManager__TransactionFailed();
+error EquityManager__InsufficientBalance();
+&nbsp;
+/// @custom:security-contact info@impact3.io
+contract EquityManager is Pausable, AccessControl, ReentrancyGuard {
+    using SafeMath for uint256;
+&nbsp;
+    event FundsReceived(address indexed addr, uint256 amount);
+    event FundsDistributed(uint256 amount);
+    event EquityStakeUpdated(uint256 count, uint256 timeUpdated);
+    event NewStakeHolderAdded(
+        address holder,
+        uint256 stake,
+        uint256 stakeholderNum,
+        uint256 timeAdded
+    );
+&nbsp;
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+&nbsp;
+    struct EquityStake {
+        address holder;
+        uint256 stakePercentage;
+        uint256 lastReceived;
+        uint256 created;
+    }
+&nbsp;
+    EquityStake[] public Istakeholders;
+    EquityStake[] public Cstakeholders;
+    uint256 public stakeholderCount;
+    uint256 counter = 0;
+    address payable public i3Fund;
+    uint256 cumfundsDistributed = 0;
+    uint256 cumfundsToI3 = 0;
+    uint256 public immutable i_interval;
+    uint256 private s_lastTimeStamp;
+&nbsp;
+    constructor(address _i3Fund, uint256 _interval) {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(PAUSER_ROLE, msg.sender);
+        _grantRole(MANAGER_ROLE, msg.sender);
+        setFund(_i3Fund);
+        i_interval = _interval;
+        s_lastTimeStamp = block.timestamp;
+    }
+&nbsp;
+    /////////////////////
+    // Main Functions //
+    /////////////////////
+&nbsp;
+    function setFund(address fund) public onlyRole(MANAGER_ROLE) nonReentrant {
+        i3Fund = payable(fund);
+    }
+&nbsp;
+    /*
+     * @notice Method for distributing funds
+     * @notice equity stake is updated at the every stipulated interval
+     */
+    function distributeFunds() public whenNotPaused nonReentrant {
+        uint256 fundsToDistribute = address(this).balance;
+        bool incrStake = timePassed();
+        Cstakeholders = updateStake(incrStake);
+        EquityStake[] memory equityStakeHolders = Cstakeholders;
+        for (uint256 i = 0; i &lt; stakeholderCount; i++) {
+            uint256 amount = fundsToDistribute
+                .mul(equityStakeHolders[i].stakePercentage)
+                .div(100 * (10**18));
+            equityStakeHolders[i].lastReceived = block.timestamp;
+            cumfundsDistributed += amount;
+            sendValue(payable(equityStakeHolders[i].holder), amount);
+        }
+        cumfundsToI3 += address(this).balance;
+        sendValue(i3Fund, address(this).balance);
+        emit FundsDistributed(cumfundsDistributed);
+    }
+&nbsp;
+    function totalStake(EquityStake[] memory _stakeholders)
+        public
+        view
+        returns (uint256)
+    {
+        uint256 _totalStake = 0;
+        for (uint256 i = 0; i &lt; stakeholderCount; i++) {
+            _totalStake += _stakeholders[i].stakePercentage;
+        }
+        return _totalStake;
+    }
+&nbsp;
+    /*
+     * @notice Method for adding new stakeholder
+     * @notice Only the manager can call this funtion
+     * @param holder, new stakeholder's address
+     * @param stake, new stakeholder's stake in %
+     */
+    function addHolder(address holder, uint256 stake)
+        public
+        whenNotPaused
+        onlyRole(MANAGER_ROLE)
+    {
+        if (totalStake(updateStake(false)).add(stake) &gt; (100 * (10**18))) {
+            // 100%
+            revert EquityManager__TotalValueGreaterThan100();
+        }
+&nbsp;
+        if (stake &lt;= 0) {
+            revert EquityManager__StakeIsZero();
+        }
+        Istakeholders.push(
+            EquityStake(holder, stake, block.timestamp, block.timestamp)
+        );
+        Cstakeholders.push(
+            EquityStake(holder, stake, block.timestamp, block.timestamp)
+        );
+        stakeholderCount++;
+        emit NewStakeHolderAdded(
+            holder,
+            stake,
+            stakeholderCount,
+            block.timestamp
+        );
+    }
+&nbsp;
+    function sendValue(address payable recipient, uint256 amount) internal {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (address(this).balance &lt; amount) {
+            revert EquityManager__InsufficientBalance();
+        }
+        (bool success, ) = recipient.call{value: amount}("");
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!success) {
+            revert EquityManager__TransactionFailed();
+        }
+    }
+&nbsp;
+    function timePassed() internal returns (bool) {
+        bool timepassed = ((block.timestamp - s_lastTimeStamp) &gt;= i_interval);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (timepassed) {
+<span class="cstat-no" title="statement not covered" >            s_lastTimeStamp = block.timestamp</span>;
+<span class="cstat-no" title="statement not covered" >            return true;</span>
+        }
+        return false;
+    }
+&nbsp;
+    /*
+     * @notice Internal funtion for updating equity stake
+     * @notice It checks whether the total stake &gt; 100
+     * @param incrStake, a bool to ensure equity stakes
+     * are updated only after the stipulated interval.
+     */
+    function updateStake(bool incrStake)
+        internal
+        returns (EquityStake[] storage)
+    {
+        EquityStake[] storage maxEquityStake = Cstakeholders;
+        EquityStake[] storage testEquityStake = Cstakeholders;
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (incrStake) {
+<span class="cstat-no" title="statement not covered" >            EquityStake[] memory Iequitystake = Istakeholders;</span>
+<span class="cstat-no" title="statement not covered" >            for (uint256 i = 0; i &lt; Cstakeholders.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                testEquityStake[i].stakePercentage += Iequitystake[i]</span>
+                    .stakePercentage;
+            }
+<span class="cstat-no" title="statement not covered" >            if (totalStake(testEquityStake) &lt;= 100) {</span>
+                counter++;
+<span class="cstat-no" title="statement not covered" >                emit EquityStakeUpdated(counter, block.timestamp);</span>
+<span class="cstat-no" title="statement not covered" >                return testEquityStake;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            return maxEquityStake;</span>
+        }
+        return Cstakeholders;
+    }
+&nbsp;
+    function pause() public onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function unpause() public onlyRole(PAUSER_ROLE) {</span>
+<span class="cstat-no" title="statement not covered" >        _unpause()</span>;
+    }
+&nbsp;
+    function deposit() external payable {
+        emit FundsReceived(msg.sender, msg.value);
+    }
+&nbsp;
+    /////////////////////
+    // Getter Functions //
+    /////////////////////
+&nbsp;
+    /*
+     * @notice Function for getting stakeholders and
+     * their current equity stake
+     */
+    function currentStakeHolders()
+        external
+        view
+        returns (address[] memory _holders, uint256[] memory _stakesPercent)
+    {
+        EquityStake[] memory equitystake = Cstakeholders;
+        _holders = new address[](equitystake.length);
+        _stakesPercent = new uint256[](equitystake.length);
+        for (uint256 i = 0; i &lt; equitystake.length; i++) {
+            _holders[i] = equitystake[i].holder;
+            _stakesPercent[i] = equitystake[i].stakePercentage;
+        }
+&nbsp;
+        return (_holders, _stakesPercent);
+    }
+&nbsp;
+    function contractBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+&nbsp;
+    function Impact3Account() external view returns (address) {
+        return i3Fund;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function PauserRole() external pure returns (bytes32) {</span>
+<span class="cstat-no" title="statement not covered" >        return PAUSER_ROLE;</span>
+    }
+&nbsp;
+    function equityUpdateInterval() external view returns (uint256) {
+        return i_interval;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function stakeUpdatedXtimes() external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return counter;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function fundsDistributedToDate() external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return cumfundsDistributed;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function fundsSentToI3() external view returns (uint256) {</span>
+<span class="cstat-no" title="statement not covered" >        return cumfundsToI3;</span>
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jul 17 2022 23:58:21 GMT+0100 (British Summer Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
