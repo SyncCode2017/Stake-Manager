@@ -523,7 +523,7 @@ export interface StakeManager extends BaseContract {
     ): Promise<ContractTransaction>;
 
     setCompanyTreasuryAddress(
-      fund: PromiseOrValue<string>,
+      _fund: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -636,7 +636,7 @@ export interface StakeManager extends BaseContract {
   ): Promise<ContractTransaction>;
 
   setCompanyTreasuryAddress(
-    fund: PromiseOrValue<string>,
+    _fund: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -748,7 +748,7 @@ export interface StakeManager extends BaseContract {
     ): Promise<void>;
 
     setCompanyTreasuryAddress(
-      fund: PromiseOrValue<string>,
+      _fund: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -933,7 +933,7 @@ export interface StakeManager extends BaseContract {
     ): Promise<BigNumber>;
 
     setCompanyTreasuryAddress(
-      fund: PromiseOrValue<string>,
+      _fund: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1045,7 +1045,7 @@ export interface StakeManager extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     setCompanyTreasuryAddress(
-      fund: PromiseOrValue<string>,
+      _fund: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

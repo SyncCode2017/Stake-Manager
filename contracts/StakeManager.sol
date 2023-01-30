@@ -89,7 +89,7 @@ contract StakeManager is Pausable, AccessControl, ReentrancyGuard {
         // set the interval and window and current end of interval timestamp
         intervalSeconds = _interval;
         updateWindowSeconds = _window;
-        lastEndOfIntervalTimestamp = block.timestamp;
+        lastEndOfIntervalTimestamp = block.timestamp + intervalSeconds;
     }
 
     /// @notice Distrbute funds to beneficiaries and remainder to Company Treasury
@@ -228,11 +228,11 @@ contract StakeManager is Pausable, AccessControl, ReentrancyGuard {
     }
 
     /// @notice Updates the Company Treasury address
-    /// @param fund The new address of the Impact 3 fund
+    /// @param _fund The new address of the Impact 3 fund
     function setCompanyTreasuryAddress(
-        address fund
+        address _fund
     ) public onlyRole(MANAGER_ROLE) {
-        companyTreasuryAddress = payable(fund);
+        companyTreasuryAddress = payable(_fund);
     }
 
     /// @notice Returns whether we are within the update window
@@ -244,6 +244,8 @@ contract StakeManager is Pausable, AccessControl, ReentrancyGuard {
             block.timestamp >= _opentimestamp &&
             block.timestamp < _closetimestamp
         ) {
+            return true;
+        } else if (block.timestamp < lastEndOfIntervalTimestamp) {
             return true;
         }
 

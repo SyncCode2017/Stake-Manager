@@ -31,7 +31,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -73,7 +73,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -117,7 +117,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -164,7 +164,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -206,7 +206,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -248,7 +248,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -290,7 +290,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -332,7 +332,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -376,7 +376,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },
@@ -389,8 +389,8 @@
       ]
     },
     "/Users/abolaji/hardhat-personal/impact3/Stake-Manager/contracts/StakeManager.sol": {
-      "lastModificationDate": 1675027933440,
-      "contentHash": "92871734e08fb2c6a980af9bc7ce9e7e",
+      "lastModificationDate": 1675086694473,
+      "contentHash": "e32ecbf2722d938f6b41b4bc9f436e11",
       "sourceName": "contracts/StakeManager.sol",
       "solcConfig": {
         "version": "0.8.16",
@@ -418,7 +418,7 @@
             }
           },
           "metadata": {
-            "useLiteralContent": false
+            "useLiteralContent": true
           }
         }
       },

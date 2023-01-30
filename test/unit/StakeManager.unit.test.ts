@@ -1,6 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { assert, expect } from "chai"
-import { BigNumber, ContractTransaction, FixedNumber } from "ethers"
+import { BigNumber, ContractTransaction } from "ethers"
 import { network, deployments, ethers, getNamedAccounts } from "hardhat"
 import { networkConfig } from "../../helper-hardhat-config"
 import { StakeManager as StakeManagerType } from "../../typechain-types"
@@ -17,7 +17,6 @@ const setup = deployments.createFixture(async () => {
 
     return {
         ...contracts,
-        // users    : await setupUsers(await getUnnamedAccounts(), contracts),
         deployer : await setupUser(deployer, contracts),
         alice    : await setupUser(alice, contracts),
         bob      : await setupUser(bob, contracts),
@@ -38,7 +37,6 @@ describe("Stake Manager Unit Tests", function () {
         bob: TestAccount,
         charlie: TestAccount,
         accounts: SignerWithAddress[],
-        manager: SignerWithAddress,
         companyTreasury: SignerWithAddress,
         fundsToShareInEth: number,
         fundsToShareInWei: BigNumber,
@@ -52,7 +50,6 @@ describe("Stake Manager Unit Tests", function () {
         ({ deployer, alice, bob, charlie, stakeManager }  = await setup())
         accounts = await ethers.getSigners()
         const chainId: number = network.config.chainId!
-        manager = accounts[4]
         companyTreasury = accounts[5]
         stake1 = 50000000 
         stake2 = 20000000 
@@ -85,7 +82,7 @@ describe("Stake Manager Unit Tests", function () {
 
     describe("Adding new beneficiaries and their stakes", function () {
         it("allows only manager role to add beneficiary", async () => {
-            await moveTime(2592005) 
+            await moveTime(1000) 
             await expect(
                 alice.stakeManager.addBeneficiary(
                     alice.address,
@@ -93,9 +90,9 @@ describe("Stake Manager Unit Tests", function () {
                 )
             ).to.be.revertedWith("AccessControl")
         })
-        it("can add stakeholders addHolder", async () => {
-            await moveTime(2592005)
-            const trans = await deployer.stakeManager.addBeneficiary(
+        it("can add beneficiary in the first month", async () => {
+            await moveTime(1000)
+            const trans: ContractTransaction = await deployer.stakeManager.addBeneficiary(
                 alice.address,
                 stake1
             )
@@ -105,8 +102,20 @@ describe("Stake Manager Unit Tests", function () {
 
             assert.equal(holder, alice.address)
         })
-        it("emits an event after adding stakeholder", async function () {
-            await moveTime(2592005)
+        it("can add beneficiary in the first update window", async () => {
+            await moveTime(5356800) // 62 days
+            const trans: ContractTransaction = await deployer.stakeManager.addBeneficiary(
+                alice.address,
+                stake1
+            )
+            await trans.wait()
+            const stakeholder: [string[], BigNumber[]] = await stakeManager.getBeneficiariesAddresses()
+            const holder = stakeholder[0].toString()
+
+            assert.equal(holder, alice.address)
+        })
+        it("emits an event after adding beneficiary", async function () {
+            await moveTime(5356800) // 62 days
             await expect(
                  deployer.stakeManager.addBeneficiary(
                     alice.address,
@@ -115,7 +124,7 @@ describe("Stake Manager Unit Tests", function () {
             ).to.emit(stakeManager, "BeneficiariesAdded")
         })
         it("reverts when stake-is-greater than 1B", async () => {
-            await moveTime(2592005)
+            await moveTime(1000)
             const stake3 = 600000000
             const stake4 = 500000000
             const tx1: ContractTransaction = await deployer.stakeManager.addBeneficiary(
@@ -131,14 +140,14 @@ describe("Stake Manager Unit Tests", function () {
         })
         it("reverts stake is zero", async () => {
             const stake5 = 0
-            await moveTime(2592005)
+            await moveTime(1000)
             await expect(
                 deployer.stakeManager.addBeneficiary(bob.address, stake5)
             ).to.be.revertedWith("StakeManager__StakeIsZero()")
         })
-        it("reverts when you add beneficiary when the update is closed", async () => {
+        it("reverts when beneficiary is added outside the update window", async () => {
             const stake5 = 1000000
-            await moveTime(259)
+            await moveTime(2592005)
             await expect(
                 deployer.stakeManager.addBeneficiary(bob.address, stake5)
             ).to.be.revertedWith("StakeManager__ContractUpdateWindowIsNotOpen()")
@@ -146,8 +155,8 @@ describe("Stake Manager Unit Tests", function () {
     })
     describe("Updating existing stakeholders and their stakes", function () {
         it("allows only manager to update-stake", async () => {
-            await moveTime(2592005)
-            const tx1 = await deployer.stakeManager.addBeneficiary(
+            await moveTime(10)
+            const tx1: ContractTransaction = await deployer.stakeManager.addBeneficiary(
                 alice.address,
                 stake1
             )
@@ -161,13 +170,14 @@ describe("Stake Manager Unit Tests", function () {
             ).to.be.revertedWith("AccessControl")
         })
         it("updates_equities", async () => {
-            await moveTime(2592005)
-            const trans1 = await deployer.stakeManager.addBeneficiary(
+            await moveTime(1000)
+            const trans1: ContractTransaction = await deployer.stakeManager.addBeneficiary(
                 alice.address,
                 stake1
             )
             await trans1.wait()
-            const trans2 = await deployer.stakeManager.updateBeneficiariesStake(
+            await moveTime(5356800) // 62 days
+            const trans2: ContractTransaction = await deployer.stakeManager.updateBeneficiariesStake(
                 alice.address,
                 stake1
             )
@@ -180,11 +190,12 @@ describe("Stake Manager Unit Tests", function () {
             assert.equal(equity, stake1.toString())
         })
         it("emits StakeHolderStakeIncreased event", async () => {
-            await moveTime(2592005)
+            await moveTime(1000)
             await deployer.stakeManager.addBeneficiary(
                 bob.address,
                 stake1
             )
+            await moveTime(5356800) // 62 days
             await expect(
                  stakeManager.updateBeneficiariesStake(
                     bob.address,
@@ -193,65 +204,117 @@ describe("Stake Manager Unit Tests", function () {
             ).to.emit(stakeManager, "BeneficiaryStakeIncreased")
         })
     })
-    // describe("Fund Distribution", function () {
-    //     it("distributes fund", async () => {
-    //         const trx1 = await stakeholder3.sendTransaction({
-    //             from: stakeholder3.address,
-    //             to: stakeManager.address,
-    //             value: fundsToShareInWei,
-    //         })
-    //         await trx1.wait(1)
-    //         const stake3 = 50 * 10 ** 6 //50000000
-    //         //await moveTime(10000)
-    //         await stakeManager.addStakeHolder(
-    //             stakeholder1.address,
-    //             stake3
-    //         )
+    describe("Fund Distribution", function () {
+        it("distributes fund", async () => {
+            const trx1: ContractTransaction = await deployer.signer.sendTransaction({
+                from: deployer.address,
+                to: stakeManager.address,
+                value: fundsToShareInWei,
+            })
+            await trx1.wait()
+            const stake3 = 500 * 10 ** 6 //50000000
+            await moveTime(1000)
+            const trx2: ContractTransaction = await stakeManager.addBeneficiary(
+                alice.address,
+                stake3
+            )
+            await trx2.wait()
 
-    //         var startingBalance = await (
-    //             await stakeholder1.getBalance()
-    //         ).toString()
-    //         startingBalance = ethers.utils
-    //             .formatEther(startingBalance)
-    //             .toString()
+            var startingBalance = await (
+                await alice.signer.getBalance()
+            ).toString()
+            startingBalance = ethers.utils
+                .formatEther(startingBalance)
+                .toString()
 
-    //         await moveTime(2595000)
-    //         const trans1 = await stakeManager.distributeFunds()
-    //         await trans1.wait(1)
+            await moveTime(2595010)
+            const trx3: ContractTransaction = await deployer.stakeManager.distributeFunds()
+            await trx3.wait()
 
-    //         var endingBalance = await (
-    //             await stakeholder1.getBalance()
-    //         ).toString()
-    //         endingBalance = ethers.utils
-    //             .formatEther(endingBalance)
-    //             .toString()
-    //         const bal = Number(endingBalance) - Number(startingBalance)
-    //         const sharedFund =
-    //             (stake3 * fundsToShareEth) / (100 * 10 ** 6)
-    //         assert.equal(sharedFund, bal)
-    //     })
-    //     it("emits FundsDistributed event", async () => {
-    //         const trx1 = await stakeholder3.sendTransaction({
-    //             from: stakeholder3.address,
-    //             to: stakeManager.address,
-    //             value: fundsToShareInWei,
-    //         })
-    //         await trx1.wait(1)
-    //         const stake3 = 50 * 10 ** 6 //50000000
-    //         //await moveTime(10100)
-    //         await stakeManager.addStakeHolder(
-    //             stakeholder1.address,
-    //             stake3
-    //         )
+            var endingBalance = await (
+                await alice.signer.getBalance()
+            ).toString()
+            endingBalance = ethers.utils
+                .formatEther(endingBalance)
+                .toString()
+            const bal = Number(endingBalance) - Number(startingBalance)
+            const sharedFund =
+                (stake3 * fundsToShareInEth) / (10 ** 9)
+            assert.equal(sharedFund, bal)
+        })
+        it("allows anyone to distribute fund", async () => {
+            const trx1: ContractTransaction = await deployer.signer.sendTransaction({
+                from: deployer.address,
+                to: stakeManager.address,
+                value: fundsToShareInWei,
+            })
+            await trx1.wait()
+            const stake3 = 500 * 10 ** 6 //50000000
+            await moveTime(1000)
+            const trx2: ContractTransaction = await stakeManager.addBeneficiary(
+                alice.address,
+                stake3
+            )
+            await trx2.wait()
 
-    //         await moveTime(2595000)
+            var startingBalance = await (
+                await alice.signer.getBalance()
+            ).toString()
+            startingBalance = ethers.utils
+                .formatEther(startingBalance)
+                .toString()
 
-    //         await expect(stakeManager.distributeFunds()).to.emit(
-    //             stakeManager,
-    //             "FundsDistributed"
-    //         )
-    //     })
-    // })
+            await moveTime(2595010)
+            const trx3: ContractTransaction = await bob.stakeManager.distributeFunds()
+            await trx3.wait()
+
+            var endingBalance = await (
+                await alice.signer.getBalance()
+            ).toString()
+            endingBalance = ethers.utils
+                .formatEther(endingBalance)
+                .toString()
+            const bal = Number(endingBalance) - Number(startingBalance)
+            const sharedFund =
+                (stake3 * fundsToShareInEth) / (10 ** 9)
+            assert.equal(sharedFund, bal)
+        })
+        it("emits FundsDistributed event", async () => {
+            const trx1: ContractTransaction = await deployer.signer.sendTransaction({
+                from: deployer.address,
+                to: stakeManager.address,
+                value: fundsToShareInWei,
+            })
+            await trx1.wait()
+            const stake3 = 50 * 10 ** 6 //50000000
+            await moveTime(10100)
+            const trx2: ContractTransaction = await deployer.stakeManager.addBeneficiary(
+                alice.address,
+                stake3
+            )
+            await trx2.wait()
+
+            await moveTime(2595000)
+
+            await expect(deployer.stakeManager.distributeFunds()).to.emit(
+                stakeManager,
+                "FundsDistributed"
+            )
+        })
+        it("can confirm whether an address is a beneficiary", async () => {
+            await moveTime(1000)
+            const holderBob: boolean = await stakeManager.isABeneficiary(bob.address)
+            assert.equal(holderBob, false)
+            
+            const trx1: ContractTransaction = await deployer.stakeManager.addBeneficiary(
+                alice.address,
+                stake1
+            )
+            await trx1.wait()
+            const holderAlice: boolean = await stakeManager.isABeneficiary(alice.address)
+            assert.equal(holderAlice, true)
+        })
+    })
 })
 
 
